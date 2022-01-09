@@ -47,6 +47,7 @@ const ProductScreen: React.FC<ProductProps> = ({navigation, routes}) => {
       <FlatList
         data={productList}
         style={styles.flatlist}
+        keyExtractor={(item, index) => index}
         renderItem={({item, index}) => {
           return <ProductCard item={item} navigation={navigation} />;
         }}
@@ -62,7 +63,6 @@ const styles = StyleSheet.create({
   },
   flatlist: {
     flex: 1,
-
   },
 });
 
