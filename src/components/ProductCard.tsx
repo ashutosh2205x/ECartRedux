@@ -1,7 +1,9 @@
 import {NavigationContext} from '@react-navigation/core';
-import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import React, {useEffect} from 'react';
+import {TouchableOpacity, View} from 'react-native';
 import {Avatar, Button, Card, Title, Paragraph} from 'react-native-paper';
+import {useDispatch, useSelector} from 'react-redux';
+import {addToCart} from '../redux/actions/CartActions';
 
 interface ProductCardProps {
   item: object;
@@ -9,8 +11,12 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({item, navigation}) => {
+  const dispatch = useDispatch();
+
   return (
-    <TouchableOpacity onPress={() => alert(item.id)}>
+    <View
+    // onPress={() => alert(item.id)}
+    >
       <Card
         elevation={2}
         style={{
@@ -38,10 +44,10 @@ const ProductCard: React.FC<ProductCardProps> = ({item, navigation}) => {
           <Paragraph style={{fontSize: 18, fontWeight: '600'}}>
             ${item?.price}
           </Paragraph>
-          <Button>Add to Cart</Button>
+          <Button onPress={() => dispatch(addToCart(item))}>Add to Cart</Button>
         </Card.Actions>
       </Card>
-    </TouchableOpacity>
+    </View>
   );
 };
 

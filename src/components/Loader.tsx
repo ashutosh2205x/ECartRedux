@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import {ActivityIndicator, Colors} from 'react-native-paper';
+import {COLORS} from '../helpers/helpers';
 
 interface LoaderProps {
   isloading: boolean;
@@ -35,8 +36,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'teal',
-    zIndex: 2,
+    backgroundColor: COLORS.LIGHT_GREY,
   },
 });
 
