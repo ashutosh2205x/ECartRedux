@@ -1,12 +1,13 @@
 import {NavigationContext} from '@react-navigation/core';
 import React, {useEffect} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import ADIcons from 'react-native-vector-icons/AntDesign';
 import {useSelector} from 'react-redux';
+import {ROUTES} from '../navigation/constants';
 interface HeaderProps {
   navigation: typeof NavigationContext;
 }
-const CartItem: React.FC<HeaderProps> = props => {
+const CartItemHeader: React.FC<HeaderProps> = ({navigation}) => {
   const cart: [] = useSelector(e => e.cartItemsReducer);
 
   useEffect(() => {
@@ -15,12 +16,16 @@ const CartItem: React.FC<HeaderProps> = props => {
   return (
     <View style={{justifyContent: 'flex-start'}}>
       <ADIcons size={25} name={'shoppingcart'} />
-      <View style={styles.cartLength}>
+      <TouchableOpacity
+        style={styles.cartLength}
+        onPress={() => {
+          navigation.navigate(ROUTES.MYCART);
+        }}>
         <Text
           style={[{color: 'white', paddingHorizontal: 7, paddingVertical: 5}]}>
           {cart.length}
         </Text>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -41,4 +46,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CartItem;
+export default CartItemHeader;

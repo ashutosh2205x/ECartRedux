@@ -2,7 +2,7 @@ import {NavigationContext} from '@react-navigation/core';
 import React from 'react';
 import {Text, View} from 'react-native';
 import ADIcons from 'react-native-vector-icons/AntDesign';
-import CartItem from './CartItem';
+import CartItemHeader from './CartItemHeader';
 interface HeaderProps {
   navigation: typeof NavigationContext;
   title: string;
@@ -19,9 +19,15 @@ const Header: React.FC<HeaderProps> = ({navigation, title}) => {
         borderBottomWidth: 1,
         marginBottom: 5,
       }}>
-      <ADIcons size={22} name={'arrowleft'} />
+      <ADIcons
+        size={22}
+        name={'arrowleft'}
+        onPress={() => {
+          navigation && navigation.goBack() ? navigation.goBack() : null;
+        }}
+      />
       <Text>{title ?? ''}</Text>
-      <CartItem navigation={navigation} />
+      <CartItemHeader navigation={navigation} />
     </View>
   );
 };
