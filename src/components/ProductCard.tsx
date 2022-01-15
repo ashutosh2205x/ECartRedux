@@ -4,14 +4,23 @@ import {TouchableOpacity, View} from 'react-native';
 import {Avatar, Button, Card, Title, Paragraph} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {ROUTES} from '../navigation/constants';
-import {addToCart} from '../redux/actions/CartActions';
+import {addtoCartAction} from '../redux/actions/CartActions';
 
 interface ProductCardProps {
   item: object;
   navigation: typeof NavigationContext;
+  removeFromCart: boolean;
+  removeFromCartDispatcher: () => void;
+  addItemtoCartDispatcher: () => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({item, navigation}) => {
+const ProductCard: React.FC<ProductCardProps> = ({
+  item,
+  navigation,
+  removeFromCart,
+  removeFromCartDispatcher,
+  addItemtoCartDispatcher,
+}) => {
   const dispatch = useDispatch();
 
   return (
@@ -51,7 +60,13 @@ const ProductCard: React.FC<ProductCardProps> = ({item, navigation}) => {
             ${item?.price}
           </Paragraph>
         </Card.Actions>
-        <Button onPress={() => dispatch(addToCart(item))}>Add to Cart</Button>
+        {removeFromCart ? (
+          <Button onPress={() => removeFromCartDispatcher()}>
+            Remove from Cart
+          </Button>
+        ) : (
+          <Button onPress={() => addItemtoCartDispatcher()}>Add to Cart</Button>
+        )}
       </Card>
     </View>
   );

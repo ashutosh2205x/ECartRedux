@@ -7,8 +7,14 @@ interface HeaderProps {
   navigation: typeof NavigationContext;
   title: string;
   backNav: boolean;
+  showCart: boolean | null;
 }
-const Header: React.FC<HeaderProps> = ({navigation, title, backNav}) => {
+const Header: React.FC<HeaderProps> = ({
+  navigation,
+  title,
+  backNav,
+  showCart,
+}) => {
   return (
     <View
       style={{
@@ -21,7 +27,7 @@ const Header: React.FC<HeaderProps> = ({navigation, title, backNav}) => {
         paddingHorizontal: 10,
         marginBottom: 5,
       }}>
-      <View style={{flex: 0.2}}>
+      <View style={{flex: 0.1}}>
         {backNav && (
           <ADIcons
             size={22}
@@ -33,11 +39,11 @@ const Header: React.FC<HeaderProps> = ({navigation, title, backNav}) => {
         )}
       </View>
 
-      <View style={{flex: 0.85, alignItems: 'center'}}>
+      <View style={{flex: 0.6, alignItems: 'center'}}>
         <Text style={{textAlign: 'center'}}>{title ?? ''}</Text>
       </View>
       <View style={{flex: 0.1}}>
-        <CartItemHeader navigation={navigation} />
+        {showCart && <CartItemHeader navigation={navigation} />}
       </View>
     </View>
   );

@@ -10,23 +10,26 @@ interface HeaderProps {
 const CartItemHeader: React.FC<HeaderProps> = ({navigation}) => {
   const cart: [] = useSelector(e => e.cartItemsReducer);
 
-  useEffect(() => {
-    console.log('cart', cart);
-  }, [cart]);
   return (
-    <View style={{justifyContent: 'flex-start'}}>
-      <ADIcons size={25} name={'shoppingcart'} />
-      <TouchableOpacity
-        style={styles.cartLength}
-        onPress={() => {
-          navigation.navigate(ROUTES.MYCART);
-        }}>
+    <TouchableOpacity
+      style={{justifyContent: 'flex-end'}}
+      onPress={() => navigation.navigate(ROUTES.MYCART)}>
+      <ADIcons size={35} name={'shoppingcart'} />
+      <View style={styles.cartLength}>
         <Text
-          style={[{color: 'white', paddingHorizontal: 7, paddingVertical: 5}]}>
+          style={[
+            {
+              color: 'white',
+              fontSize: 14,
+              justifyContent: 'flex-end',
+              textAlign: 'center',
+              padding: 8,
+            },
+          ]}>
           {cart.length}
         </Text>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -36,13 +39,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   cartLength: {
-    // flex:1,
     backgroundColor: 'crimson',
+    opacity: 0.9,
     borderRadius: 50,
+    // flex:1,
     position: 'absolute',
     top: 0,
-    bottom: 0,
-    right: 10,
+    // bottom: 10,
+    right: 15,
   },
 });
 
