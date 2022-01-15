@@ -27,7 +27,7 @@ const CartScreen: React.FC<CartItemProps> = ({navigation, routes}) => {
 
   return (
     <View style={styles.container}>
-      <Header navigation={navigation} title={'My Cart'} />
+      <Header navigation={navigation} title={'My Cart'} backNav={true} />
       {loading ? (
         <Loader isloading={loading} />
       ) : (

@@ -10,7 +10,10 @@ import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import ProductCard from '../../components/ProductCard';
 import {CONSTANTS} from '../../redux/actions/actionsConstants';
-import {setProducts} from '../../redux/actions/ProductsActions';
+import {
+  fetchAllProducts,
+  setProducts,
+} from '../../redux/actions/ProductsActions';
 import {getProductList} from '../../utils/api/APIActionCreator';
 interface ProductProps {
   navigation: typeof NavigationContext;
@@ -30,30 +33,18 @@ const ProductScreen: React.FC<ProductProps> = ({navigation, routes}) => {
       cart.forEach(el => {
         temp.filter(function (item, index) {
           if (item.id === el.id) {
-            alert(index);
             temp.splice(1, index);
           }
         });
       });
-      // console.log('new temp', temp);
     }
   }, [cart]);
 
   useEffect(() => {
-    getData();
-    dispatch({type: CONSTANTS.GET_ALL_PRODUCTS_REQUEST});
+    dispatch(fetchAllProducts());
   }, []);
 
-  const getData = async () => {
-    let data = await getProductList();
-    if (data && data.status == 200 && data.data) {
-      console.log('x', data);
-      dispatch(setProducts(data.data));
-    }
-  };
-
   useEffect(() => {
-    console.log('productdata', productdata);
     if (productdata && Array.isArray(productdata) && productdata.length > 0) {
       setProductList(productdata);
     }
@@ -61,7 +52,7 @@ const ProductScreen: React.FC<ProductProps> = ({navigation, routes}) => {
 
   return (
     <View style={styles.container}>
-      <Header navigation={navigation} title={'Products'} />
+      <Header navigation={navigation} title={'Products'} backNav={false} />
       {loading ? (
         <Loader isloading={loading} />
       ) : (
