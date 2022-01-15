@@ -4,54 +4,69 @@ import {
 } from '@react-navigation/core';
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, FlatList, Text} from 'react-native';
-import {Colors, ActivityIndicator} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
+import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import ProductCard from '../../components/ProductCard';
-import {CONSTANTS} from '../../redux/actions/actionsConstants';
-import {setProducts} from '../../redux/actions/ProductsActions';
-import {getProductList} from '../../utils/api/APIActionCreator';
+import {addtoCartAction} from '../../redux/actions/CartActions';
+import {fetchAllProducts} from '../../redux/actions/ProductsActions';
 interface ProductProps {
   navigation: typeof NavigationContext;
   routes: typeof NavigationRouteContext;
 }
 const ProductScreen: React.FC<ProductProps> = ({navigation, routes}) => {
   const dispatch = useDispatch();
+  const cart: [] = useSelector(state => state.cartItemsReducer);
   const productdata: [] = useSelector(state => state.getAllProducts.products);
   const loading = useSelector(state => state.getAllProducts.loading);
+  const cartdata: [] = useSelector(state => state.cartItemsReducer);
+
   const [productList, setProductList] = useState<[]>([]);
 
   useEffect(() => {
-    getData();
-    dispatch({type: CONSTANTS.GET_ALL_PRODUCTS_REQUEST});
+    dispatch(fetchAllProducts());
   }, []);
 
-  const getData = async () => {
-    let data = await getProductList();
-    if (data && data.status == 200 && data.data) {
-      console.log('x', data);
-      dispatch(setProducts(data.data));
-    }
-  };
-
   useEffect(() => {
-    console.log('productdata', productdata);
     if (productdata && Array.isArray(productdata) && productdata.length > 0) {
       setProductList(productdata);
     }
   }, [productdata]);
 
+  const addItemtoCartDispatcher = async (item: object, index: number) => {
+    dispatch(addtoCartAction(item));
+  };
+
   return (
     <View style={styles.container}>
-      {loading && <Loader isloading={loading} />}
-      <FlatList
-        data={productList}
-        style={styles.flatlist}
-        keyExtractor={(item, index) => index}
-        renderItem={({item, index}) => {
-          return <ProductCard item={item} navigation={navigation} />;
-        }}
+      <Header
+        navigation={navigation}
+        title={'Products'}
+        backNav={false}
+        showCart={true}
       />
+      {loading ? (
+        <Loader isloading={loading} />
+      ) : (
+        <FlatList
+          data={productList}
+          style={styles.flatlist}
+          keyExtractor={(item, index) => index}
+          renderItem={({item, index}) => {
+            return (
+              <ProductCard
+                item={item}
+                removeFromCart={false}
+                navigation={navigation}
+                addItemtoCartDispatcher={() =>
+                  addItemtoCartDispatcher(item, index)
+                }
+                removeFromCartDispatcher={() => {}}
+              />
+            );
+          }}
+        />
+      )}
     </View>
   );
 };
